@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	. "github.com/s2gatev/structql/query/ast"
 	. "github.com/s2gatev/structql/query/parsing"
 )
 
@@ -35,7 +36,7 @@ func testParseWrongQuery(t *testing.T,
 func TestSelectSingleFieldFrom(t *testing.T) {
 	testParseCorrectQuery(t,
 		`SELECT Name FROM User`,
-		&SelectStatement{
+		&Select{
 			Fields: []*Field{
 				&Field{Name: "Name"},
 			},
@@ -46,7 +47,7 @@ func TestSelectSingleFieldFrom(t *testing.T) {
 func TestSelectMultipleFieldsFrom(t *testing.T) {
 	testParseCorrectQuery(t,
 		`SELECT Name, Location, Age FROM User`,
-		&SelectStatement{
+		&Select{
 			Fields: []*Field{
 				&Field{Name: "Name"}, &Field{Name: "Location"}, &Field{Name: "Age"},
 			},
@@ -57,7 +58,7 @@ func TestSelectMultipleFieldsFrom(t *testing.T) {
 func TestSelectAllFieldsFrom(t *testing.T) {
 	testParseCorrectQuery(t,
 		`SELECT * FROM User`,
-		&SelectStatement{
+		&Select{
 			Fields: []*Field{
 				&Field{Name: "*"},
 			},
@@ -68,7 +69,7 @@ func TestSelectAllFieldsFrom(t *testing.T) {
 func TestSelectFromWithAlias(t *testing.T) {
 	testParseCorrectQuery(t,
 		`SELECT u.Name, u.Location, u.Age FROM User u`,
-		&SelectStatement{
+		&Select{
 			Fields: []*Field{
 				&Field{Target: "u", Name: "Name"},
 				&Field{Target: "u", Name: "Location"},
@@ -82,7 +83,7 @@ func TestSelectFromWithAlias(t *testing.T) {
 func TestSelectFromLimitWithAlias(t *testing.T) {
 	testParseCorrectQuery(t,
 		`SELECT u.Name, u.Location, u.Age FROM User u LIMIT 10`,
-		&SelectStatement{
+		&Select{
 			Fields: []*Field{
 				&Field{Target: "u", Name: "Name"},
 				&Field{Target: "u", Name: "Location"},
@@ -97,7 +98,7 @@ func TestSelectFromLimitWithAlias(t *testing.T) {
 func TestSelectFromLimitOffsetWithAlias(t *testing.T) {
 	testParseCorrectQuery(t,
 		`SELECT u.Name, u.Location, u.Age FROM User u LIMIT 10 OFFSET 20`,
-		&SelectStatement{
+		&Select{
 			Fields: []*Field{
 				&Field{Target: "u", Name: "Name"},
 				&Field{Target: "u", Name: "Location"},
@@ -113,7 +114,7 @@ func TestSelectFromLimitOffsetWithAlias(t *testing.T) {
 func TestSelectFromWhereWithAlias(t *testing.T) {
 	testParseCorrectQuery(t,
 		`SELECT u.Name FROM User u WHERE u.Age=21`,
-		&SelectStatement{
+		&Select{
 			Fields: []*Field{
 				&Field{Target: "u", Name: "Name"},
 			},

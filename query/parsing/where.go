@@ -1,6 +1,7 @@
 package parsing
 
 import (
+	"github.com/s2gatev/structql/query/ast"
 	"github.com/s2gatev/structql/query/lexing"
 )
 
@@ -13,8 +14,8 @@ func (s *WhereState) Next() []State {
 	return s.NextStates
 }
 
-func (s *WhereState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
-	if target, ok := result.(HasConditions); ok {
+func (s *WhereState) Parse(result ast.Node, tokenizer *Tokenizer) (ast.Node, bool) {
+	if target, ok := result.(ast.HasConditions); ok {
 		if token, _ := tokenizer.ReadToken(); token != lexing.WHERE {
 			tokenizer.UnreadToken()
 			return result, false
@@ -31,7 +32,7 @@ func (s *WhereState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
 				panic("Wrong condition in WHERE clause.")
 			}
 
-			condition := &EqualsCondition{}
+			condition := &ast.EqualsCondition{}
 			condition.Field = parseField(fieldName)
 
 			token, value := tokenizer.ReadToken()

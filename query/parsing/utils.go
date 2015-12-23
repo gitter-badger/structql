@@ -2,10 +2,12 @@ package parsing
 
 import (
 	"strings"
+
+	"github.com/s2gatev/structql/query/ast"
 )
 
-func parseField(literal string) *Field {
-	field := &Field{}
+func parseField(literal string) *ast.Field {
+	field := &ast.Field{}
 	literalParts := strings.Split(literal, ".")
 	if len(literalParts) > 1 {
 		field.Target = literalParts[0]

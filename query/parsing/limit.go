@@ -1,6 +1,7 @@
 package parsing
 
 import (
+	"github.com/s2gatev/structql/query/ast"
 	"github.com/s2gatev/structql/query/lexing"
 )
 
@@ -13,8 +14,8 @@ func (ls *LimitState) Next() []State {
 	return ls.NextStates
 }
 
-func (ls *LimitState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
-	if target, ok := result.(HasLimit); ok {
+func (ls *LimitState) Parse(result ast.Node, tokenizer *Tokenizer) (ast.Node, bool) {
+	if target, ok := result.(ast.HasLimit); ok {
 		if token, _ := tokenizer.ReadToken(); token != lexing.LIMIT {
 			tokenizer.UnreadToken()
 			return result, false

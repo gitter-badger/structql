@@ -1,6 +1,7 @@
 package parsing
 
 import (
+	"github.com/s2gatev/structql/query/ast"
 	"github.com/s2gatev/structql/query/lexing"
 )
 
@@ -13,6 +14,6 @@ func (s *FromState) Next() []State {
 	return s.NextStates
 }
 
-func (s *FromState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
+func (s *FromState) Parse(result ast.Node, tokenizer *Tokenizer) (ast.Node, bool) {
 	return SelectTarget(lexing.FROM)(result, tokenizer)
 }

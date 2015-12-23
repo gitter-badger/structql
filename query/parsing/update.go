@@ -1,6 +1,7 @@
 package parsing
 
 import (
+	"github.com/s2gatev/structql/query/ast"
 	"github.com/s2gatev/structql/query/lexing"
 )
 
@@ -13,8 +14,8 @@ func (s *UpdateState) Next() []State {
 	return s.NextStates
 }
 
-func (s *UpdateState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
-	return SelectTarget(lexing.UPDATE)(&Update{}, tokenizer)
+func (s *UpdateState) Parse(result ast.Node, tokenizer *Tokenizer) (ast.Node, bool) {
+	return SelectTarget(lexing.UPDATE)(&ast.Update{}, tokenizer)
 }
 
 func (s *UpdateState) isFieldToken(token lexing.Token) bool {

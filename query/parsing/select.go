@@ -1,6 +1,7 @@
 package parsing
 
 import (
+	"github.com/s2gatev/structql/query/ast"
 	"github.com/s2gatev/structql/query/lexing"
 )
 
@@ -13,13 +14,13 @@ func (s *SelectState) Next() []State {
 	return s.NextStates
 }
 
-func (s *SelectState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
+func (s *SelectState) Parse(result ast.Node, tokenizer *Tokenizer) (ast.Node, bool) {
 	if token, _ := tokenizer.ReadToken(); token != lexing.SELECT {
 		tokenizer.UnreadToken()
 		return result, false
 	}
 
-	target := &SelectStatement{}
+	target := &ast.Select{}
 
 	// Parse fields.
 	for {

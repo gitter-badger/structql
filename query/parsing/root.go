@@ -1,5 +1,9 @@
 package parsing
 
+import (
+	"github.com/s2gatev/structql/query/ast"
+)
+
 type RootState struct{}
 
 func (s *RootState) Next() []State {
@@ -9,7 +13,7 @@ func (s *RootState) Next() []State {
 	}
 }
 
-func (s *RootState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
+func (s *RootState) Parse(result ast.Node, tokenizer *Tokenizer) (ast.Node, bool) {
 	return nil, true
 }
 

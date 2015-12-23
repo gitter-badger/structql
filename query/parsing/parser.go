@@ -2,6 +2,8 @@ package parsing
 
 import (
 	"io"
+
+	"github.com/s2gatev/structql/query/ast"
 )
 
 // Parser parses SQL query into AST.
@@ -15,9 +17,9 @@ func NewParser(queryReader io.Reader) *Parser {
 }
 
 // Parse parses the query into a Node.
-func (p *Parser) Parse() (Node, error) {
+func (p *Parser) Parse() (ast.Node, error) {
 	var parser State = &RootState{}
-	var result Node
+	var result ast.Node
 	for {
 		if len(parser.Next()) == 0 {
 			break

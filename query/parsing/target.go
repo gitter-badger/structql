@@ -1,12 +1,13 @@
 package parsing
 
 import (
+	"github.com/s2gatev/structql/query/ast"
 	"github.com/s2gatev/structql/query/lexing"
 )
 
-func SelectTarget(key lexing.Token) func(Node, *Tokenizer) (Node, bool) {
-	return func(result Node, tokenizer *Tokenizer) (Node, bool) {
-		if target, ok := result.(HasTarget); ok {
+func SelectTarget(key lexing.Token) func(ast.Node, *Tokenizer) (ast.Node, bool) {
+	return func(result ast.Node, tokenizer *Tokenizer) (ast.Node, bool) {
+		if target, ok := result.(ast.HasTarget); ok {
 			if token, _ := tokenizer.ReadToken(); token != key {
 				tokenizer.UnreadToken()
 				return result, false
