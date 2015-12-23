@@ -117,8 +117,8 @@ func TestSelectFromWhereWithAlias(t *testing.T) {
 			Fields: []*Field{
 				&Field{Target: "u", Name: "Name"},
 			},
-			Filters: []*EqualsFilter{
-				&EqualsFilter{
+			Conditions: []*EqualsCondition{
+				&EqualsCondition{
 					Field: &Field{Target: "u", Name: "Age"},
 					Value: "21",
 				},

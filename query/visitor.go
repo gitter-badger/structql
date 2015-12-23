@@ -20,11 +20,11 @@ func (v *Visitor) Visit(node parsing.Node, handle func(parsing.Node) bool) {
 		for _, field := range concrete.Fields {
 			v.Visit(field, handle)
 		}
-		for _, filter := range concrete.Filters {
-			v.Visit(filter, handle)
+		for _, condition := range concrete.Conditions {
+			v.Visit(condition, handle)
 		}
 	case *parsing.Field:
-	case *parsing.EqualsFilter:
+	case *parsing.EqualsCondition:
 		v.Visit(concrete.Field, handle)
 	}
 }

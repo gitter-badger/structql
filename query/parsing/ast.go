@@ -12,8 +12,8 @@ type HasFields interface {
 	AddField(*Field)
 }
 
-type HasFilters interface {
-	AddFilter(*EqualsFilter)
+type HasConditions interface {
+	AddCondition(*EqualsCondition)
 }
 
 type HasTarget interface {
@@ -42,17 +42,13 @@ func (f *Field) Assemble() string {
 	return field
 }
 
-type EqualsFilter struct {
+type EqualsCondition struct {
 	Field *Field
 	Value string
 }
 
-func (ef *EqualsFilter) Assemble() string {
-	filter := ""
-	filter += ef.Field.Assemble()
-	filter += "="
-	filter += ef.Value
-	return filter
+func (c *EqualsCondition) Assemble() string {
+	return c.Field.Assemble() + "=" + c.Value
 }
 
 // SelectStatement represents a SQL SELECT statement.
@@ -60,7 +56,7 @@ type SelectStatement struct {
 	Fields     []*Field
 	TableName  string
 	TableAlias string
-	Filters    []*EqualsFilter
+	Conditions []*EqualsCondition
 	Limit      string
 	Offset     string
 }
@@ -69,8 +65,8 @@ func (ss *SelectStatement) AddField(field *Field) {
 	ss.Fields = append(ss.Fields, field)
 }
 
-func (ss *SelectStatement) AddFilter(filter *EqualsFilter) {
-	ss.Filters = append(ss.Filters, filter)
+func (ss *SelectStatement) AddCondition(condition *EqualsCondition) {
+	ss.Conditions = append(ss.Conditions, condition)
 }
 
 func (ss *SelectStatement) AddTarget(name, alias string) {
@@ -102,15 +98,15 @@ func (ss *SelectStatement) Assemble() string {
 
 	query := fmt.Sprintf("SELECT %v FROM %v", fields, target)
 
-	if len(ss.Filters) > 0 {
-		filters := ""
-		for index, filter := range ss.Filters {
+	if len(ss.Conditions) > 0 {
+		conditions := ""
+		for index, condition := range ss.Conditions {
 			if index != 0 {
-				filters += " AND "
+				conditions += " AND "
 			}
-			filters += filter.Assemble()
+			conditions += condition.Assemble()
 		}
-		query += " WHERE " + filters
+		query += " WHERE " + conditions
 	}
 
 	if ss.Limit != "" {

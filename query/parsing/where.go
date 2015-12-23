@@ -14,7 +14,7 @@ func (s *WhereState) Next() []State {
 }
 
 func (s *WhereState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
-	if target, ok := result.(HasFilters); ok {
+	if target, ok := result.(HasConditions); ok {
 		if token, _ := tokenizer.ReadToken(); token != lexing.WHERE {
 			tokenizer.UnreadToken()
 			return result, false
@@ -31,16 +31,16 @@ func (s *WhereState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
 				panic("Wrong condition in WHERE clause.")
 			}
 
-			filter := &EqualsFilter{}
-			filter.Field = parseField(fieldName)
+			condition := &EqualsCondition{}
+			condition.Field = parseField(fieldName)
 
 			token, value := tokenizer.ReadToken()
 			if token != lexing.LITERAL && token != lexing.PLACEHOLDER {
 				panic("Wrong condition in WHERE clause.")
 			}
 
-			filter.Value = value
-			target.AddFilter(filter)
+			condition.Value = value
+			target.AddCondition(condition)
 
 			if token, _ := tokenizer.ReadToken(); token != lexing.AND {
 				tokenizer.UnreadToken()
