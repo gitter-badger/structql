@@ -13,5 +13,5 @@ func isDigit(ch rune) bool {
 }
 
 func isSymbol(ch rune) bool {
-	return (ch == '_' || ch == '.' || ch == '=' || ch == '?')
+	return (ch == '_' || ch == '.')
 }

@@ -42,6 +42,10 @@ func (l *Lexer) NextToken() (Token, string) {
 		token = ASTERISK
 	case ',':
 		token = COMMA
+	case '=':
+		token = EQUALS
+	case '?':
+		token = PLACEHOLDER
 	}
 
 	return token, value

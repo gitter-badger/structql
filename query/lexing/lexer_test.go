@@ -20,6 +20,8 @@ var lexerTests = []lexerTest{
 	{"\t", WHITESPACE, "\t"},
 	{"\n", WHITESPACE, "\n"},
 	{`*`, ASTERISK, "*"},
+	{`=`, EQUALS, "="},
+	{`?`, PLACEHOLDER, "?"},
 	{`user`, LITERAL, `user`},
 	{`u.name`, LITERAL, `u.name`},
 	{`FROM`, FROM, "FROM"},

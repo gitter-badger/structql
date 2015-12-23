@@ -1,8 +1,6 @@
 package parsing
 
 import (
-	"strings"
-
 	"github.com/s2gatev/structql/query/lexing"
 )
 
@@ -24,11 +22,25 @@ func (s *WhereState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
 
 		// Parse WHERE conditions.
 		for {
-			if token, value := tokenizer.ReadToken(); token == lexing.LITERAL {
-				target.AddFilter(s.parseFilter(value))
-			} else {
+			token, fieldName := tokenizer.ReadToken()
+			if token != lexing.LITERAL {
 				panic("WHERE clause must come with conditions.")
 			}
+
+			if token, _ := tokenizer.ReadToken(); token != lexing.EQUALS {
+				panic("Wrong condition in WHERE clause.")
+			}
+
+			filter := &EqualsFilter{}
+			filter.Field = parseField(fieldName)
+
+			token, value := tokenizer.ReadToken()
+			if token != lexing.LITERAL && token != lexing.PLACEHOLDER {
+				panic("Wrong condition in WHERE clause.")
+			}
+
+			filter.Value = value
+			target.AddFilter(filter)
 
 			if token, _ := tokenizer.ReadToken(); token != lexing.AND {
 				tokenizer.UnreadToken()
@@ -40,24 +52,4 @@ func (s *WhereState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
 	} else {
 		return result, false
 	}
-}
-
-func (s *WhereState) parseField(literal string) *Field {
-	field := &Field{}
-	literalParts := strings.Split(literal, ".")
-	if len(literalParts) > 1 {
-		field.Target = literalParts[0]
-		field.Name = literalParts[1]
-	} else {
-		field.Name = literalParts[0]
-	}
-	return field
-}
-
-func (s *WhereState) parseFilter(literal string) *EqualsFilter {
-	literalParts := strings.Split(literal, "=")
-	filter := &EqualsFilter{}
-	filter.Field = s.parseField(literalParts[0])
-	filter.Value = literalParts[1]
-	return filter
 }

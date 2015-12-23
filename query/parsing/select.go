@@ -1,8 +1,6 @@
 package parsing
 
 import (
-	"strings"
-
 	"github.com/s2gatev/structql/query/lexing"
 )
 
@@ -26,7 +24,7 @@ func (s *SelectState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
 	// Parse fields.
 	for {
 		if token, value := tokenizer.ReadToken(); s.isFieldToken(token) {
-			target.AddField(s.parseField(value))
+			target.AddField(parseField(value))
 		} else {
 			return nil, false
 		}
@@ -47,16 +45,4 @@ func (s *SelectState) isFieldToken(token lexing.Token) bool {
 	default:
 		return false
 	}
-}
-
-func (s *SelectState) parseField(literal string) *Field {
-	field := &Field{}
-	literalParts := strings.Split(literal, ".")
-	if len(literalParts) > 1 {
-		field.Target = literalParts[0]
-		field.Name = literalParts[1]
-	} else {
-		field.Name = literalParts[0]
-	}
-	return field
 }
