@@ -7,11 +7,7 @@ import (
 
 // FromState parses FROM SQL clauses along with the table name and alias.
 type FromState struct {
-	NextStates []State
-}
-
-func (s *FromState) Next() []State {
-	return s.NextStates
+	BaseState
 }
 
 func (s *FromState) Parse(result ast.Node, tokenizer *Tokenizer) (ast.Node, bool) {

@@ -7,11 +7,7 @@ import (
 
 // LimitState parses LIMIT SQL clauses along with the value.
 type LimitState struct {
-	NextStates []State
-}
-
-func (ls *LimitState) Next() []State {
-	return ls.NextStates
+	BaseState
 }
 
 func (ls *LimitState) Parse(result ast.Node, tokenizer *Tokenizer) (ast.Node, bool) {

@@ -7,11 +7,7 @@ import (
 
 // SelectState parses SELECT SQL clauses along with the desired fields.
 type SelectState struct {
-	NextStates []State
-}
-
-func (s *SelectState) Next() []State {
-	return s.NextStates
+	BaseState
 }
 
 func (s *SelectState) Parse(result ast.Node, tokenizer *Tokenizer) (ast.Node, bool) {

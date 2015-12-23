@@ -7,11 +7,7 @@ import (
 
 // SetState parses SET SQL clauses along with their fields.
 type SetState struct {
-	NextStates []State
-}
-
-func (s *SetState) Next() []State {
-	return s.NextStates
+	BaseState
 }
 
 func (s *SetState) Parse(result ast.Node, tokenizer *Tokenizer) (ast.Node, bool) {

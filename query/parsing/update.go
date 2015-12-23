@@ -7,11 +7,7 @@ import (
 
 // UpdateState parses UPDATE SQL clauses along with the desired fields.
 type UpdateState struct {
-	NextStates []State
-}
-
-func (s *UpdateState) Next() []State {
-	return s.NextStates
+	BaseState
 }
 
 func (s *UpdateState) Parse(result ast.Node, tokenizer *Tokenizer) (ast.Node, bool) {

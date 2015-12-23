@@ -7,11 +7,7 @@ import (
 
 // WhereState parses WHERE SQL clauses along with their conditions.
 type WhereState struct {
-	NextStates []State
-}
-
-func (s *WhereState) Next() []State {
-	return s.NextStates
+	BaseState
 }
 
 func (s *WhereState) Parse(result ast.Node, tokenizer *Tokenizer) (ast.Node, bool) {

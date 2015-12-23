@@ -18,50 +18,31 @@ func (s *RootState) Parse(result ast.Node, tokenizer *Tokenizer) (ast.Node, bool
 }
 
 func (s *RootState) selectState() *SelectState {
-	offsetState := &OffsetState{
-		NextStates: []State{},
-	}
+	offsetState := &OffsetState{}
 
-	limitState := &LimitState{
-		NextStates: []State{
-			offsetState,
-		},
-	}
+	limitState := &LimitState{}
+	limitState.SetNext(offsetState)
 
-	whereState := &WhereState{
-		NextStates: []State{
-			limitState,
-		},
-	}
+	whereState := &WhereState{}
+	whereState.SetNext(limitState)
 
-	fromState := &FromState{
-		NextStates: []State{
-			whereState,
-			limitState,
-		},
-	}
+	fromState := &FromState{}
+	fromState.SetNext(whereState, limitState)
 
-	return &SelectState{
-		NextStates: []State{
-			fromState,
-		},
-	}
+	selectState := &SelectState{}
+	selectState.SetNext(fromState)
+
+	return selectState
 }
 
 func (s *RootState) updateState() *UpdateState {
-	whereState := &WhereState{
-		NextStates: []State{},
-	}
+	whereState := &WhereState{}
 
-	setState := &SetState{
-		NextStates: []State{
-			whereState,
-		},
-	}
+	setState := &SetState{}
+	setState.SetNext(whereState)
 
-	return &UpdateState{
-		NextStates: []State{
-			setState,
-		},
-	}
+	updateState := &UpdateState{}
+	updateState.SetNext(setState)
+
+	return updateState
 }

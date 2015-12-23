@@ -7,11 +7,7 @@ import (
 
 // OffsetState parses OFFSET SQL clauses along with the value.
 type OffsetState struct {
-	NextStates []State
-}
-
-func (s *OffsetState) Next() []State {
-	return s.NextStates
+	BaseState
 }
 
 func (s *OffsetState) Parse(result ast.Node, tokenizer *Tokenizer) (ast.Node, bool) {
