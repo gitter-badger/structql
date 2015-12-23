@@ -6,6 +6,7 @@ import (
 )
 
 // WhereState parses WHERE SQL clauses along with their conditions.
+// ... WHERE u.Age=? ...
 type WhereState struct {
 	BaseState
 }

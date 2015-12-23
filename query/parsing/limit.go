@@ -6,6 +6,7 @@ import (
 )
 
 // LimitState parses LIMIT SQL clauses along with the value.
+// ... LIMIT 10 ...
 type LimitState struct {
 	BaseState
 }

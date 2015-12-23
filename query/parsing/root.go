@@ -4,6 +4,7 @@ import (
 	"github.com/s2gatev/structql/query/ast"
 )
 
+// RootState is a fake state that combines multiple different start states.
 type RootState struct{}
 
 func (s *RootState) Next() []State {

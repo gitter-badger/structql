@@ -6,6 +6,7 @@ import (
 )
 
 // OffsetState parses OFFSET SQL clauses along with the value.
+// ... OFFSET 20 ...
 type OffsetState struct {
 	BaseState
 }

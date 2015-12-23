@@ -6,6 +6,7 @@ import (
 )
 
 // SetState parses SET SQL clauses along with their fields.
+// ... SET u.Name=?, u.Age=? ...
 type SetState struct {
 	BaseState
 }

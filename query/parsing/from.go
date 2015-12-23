@@ -6,6 +6,7 @@ import (
 )
 
 // FromState parses FROM SQL clauses along with the table name and alias.
+// ... FROM User u ...
 type FromState struct {
 	BaseState
 }

@@ -1,5 +1,6 @@
 package parsing
 
+// BaseState provides base functionality to parse states.
 type BaseState struct {
 	nextStates []State
 }

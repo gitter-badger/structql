@@ -5,7 +5,8 @@ import (
 	"github.com/s2gatev/structql/query/lexing"
 )
 
-// UpdateState parses UPDATE SQL clauses along with the desired fields.
+// UpdateState parses UPDATE SQL clauses along with the target table.
+// UPDATE User u ...
 type UpdateState struct {
 	BaseState
 }

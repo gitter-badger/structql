@@ -6,6 +6,7 @@ import (
 	"github.com/s2gatev/structql/query/ast"
 )
 
+// parseField parses field extracting its name and target.
 func parseField(literal string) *ast.Field {
 	field := &ast.Field{}
 	literalParts := strings.Split(literal, ".")

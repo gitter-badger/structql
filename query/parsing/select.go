@@ -6,6 +6,7 @@ import (
 )
 
 // SelectState parses SELECT SQL clauses along with the desired fields.
+// SELECT u.Name, u.Age ...
 type SelectState struct {
 	BaseState
 }
