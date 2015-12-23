@@ -11,14 +11,14 @@ func (s *OffsetState) Next() []State {
 	return []State{}
 }
 
-func (s *OffsetState) Parse(result Node, p *Parser) (Node, bool) {
+func (s *OffsetState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
 	if target, ok := result.(HasOffset); ok {
-		if token, _ := p.scanIgnoreWhitespace(); token != lexing.OFFSET {
-			p.unscan()
+		if token, _ := tokenizer.ReadToken(); token != lexing.OFFSET {
+			tokenizer.UnreadToken()
 			return result, false
 		}
 
-		if token, value := p.scanIgnoreWhitespace(); token == lexing.LITERAL {
+		if token, value := tokenizer.ReadToken(); token == lexing.LITERAL {
 			target.SetOffset(value)
 		} else {
 			return result, false

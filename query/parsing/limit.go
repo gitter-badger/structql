@@ -13,14 +13,14 @@ func (ls *LimitState) Next() []State {
 	}
 }
 
-func (ls *LimitState) Parse(result Node, p *Parser) (Node, bool) {
+func (ls *LimitState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
 	if target, ok := result.(HasLimit); ok {
-		if token, _ := p.scanIgnoreWhitespace(); token != lexing.LIMIT {
-			p.unscan()
+		if token, _ := tokenizer.ReadToken(); token != lexing.LIMIT {
+			tokenizer.UnreadToken()
 			return result, false
 		}
 
-		if token, value := p.scanIgnoreWhitespace(); token == lexing.LITERAL {
+		if token, value := tokenizer.ReadToken(); token == lexing.LITERAL {
 			target.SetLimit(value)
 		} else {
 			return nil, false

@@ -2,55 +2,19 @@ package parsing
 
 import (
 	"io"
-	"strings"
-
-	"github.com/s2gatev/structql/query/lexing"
 )
 
+// Parser parses SQL query into AST.
 type Parser struct {
-	lexer  *lexing.Lexer
-	buffer struct {
-		token  lexing.Token
-		value  string
-		isFull bool
-	}
+	tokenizer *Tokenizer
 }
 
-func NewParser(r io.Reader) *Parser {
-	return &Parser{lexer: lexing.NewLexer(r)}
+// NewParser creates a Parser instance for the provided query.
+func NewParser(queryReader io.Reader) *Parser {
+	return &Parser{tokenizer: NewTokenizer(queryReader)}
 }
 
-func (p *Parser) scan() (lexing.Token, string) {
-	if p.buffer.isFull {
-		p.buffer.isFull = false
-		return p.buffer.token, p.buffer.value
-	}
-
-	p.buffer.token, p.buffer.value = p.lexer.NextToken()
-
-	return p.buffer.token, p.buffer.value
-}
-
-func (p *Parser) parseField(literal string) *Field {
-	field := &Field{}
-	literalParts := strings.Split(literal, ".")
-	if len(literalParts) > 1 {
-		field.Target = literalParts[0]
-		field.Name = literalParts[1]
-	} else {
-		field.Name = literalParts[0]
-	}
-	return field
-}
-
-func (p *Parser) parseFilter(literal string) *EqualsFilter {
-	literalParts := strings.Split(literal, "=")
-	filter := &EqualsFilter{}
-	filter.Field = p.parseField(literalParts[0])
-	filter.Value = literalParts[1]
-	return filter
-}
-
+// Parse parses the query into a Node.
 func (p *Parser) Parse() (Node, error) {
 	var parser State = &RootState{}
 	var result Node
@@ -61,7 +25,7 @@ func (p *Parser) Parse() (Node, error) {
 		var parsed bool
 		for _, next := range parser.Next() {
 			var ok bool
-			if result, ok = next.Parse(result, p); ok {
+			if result, ok = next.Parse(result, p.tokenizer); ok {
 				parser = next
 				parsed = true
 				break
@@ -72,16 +36,4 @@ func (p *Parser) Parse() (Node, error) {
 		}
 	}
 	return result, nil
-}
-
-func (p *Parser) scanIgnoreWhitespace() (lexing.Token, string) {
-	token, value := p.scan()
-	if token == lexing.WHITESPACE {
-		token, value = p.scan()
-	}
-	return token, value
-}
-
-func (p *Parser) unscan() {
-	p.buffer.isFull = true
 }

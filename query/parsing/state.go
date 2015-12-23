@@ -1,6 +1,6 @@
 package parsing
 
 type State interface {
-	Parse(Node, *Parser) (Node, bool)
+	Parse(Node, *Tokenizer) (Node, bool)
 	Next() []State
 }

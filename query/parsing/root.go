@@ -8,6 +8,6 @@ func (s *RootState) Next() []State {
 	}
 }
 
-func (s *RootState) Parse(result Node, p *Parser) (Node, bool) {
+func (s *RootState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
 	return nil, true
 }

@@ -14,25 +14,25 @@ func (s *FromState) Next() []State {
 	}
 }
 
-func (s *FromState) Parse(result Node, p *Parser) (Node, bool) {
+func (s *FromState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
 	if target, ok := result.(HasTarget); ok {
-		if token, _ := p.scanIgnoreWhitespace(); token != lexing.FROM {
-			p.unscan()
+		if token, _ := tokenizer.ReadToken(); token != lexing.FROM {
+			tokenizer.UnreadToken()
 			return result, false
 		}
 
 		// Parse table name.
-		token, name := p.scanIgnoreWhitespace()
+		token, name := tokenizer.ReadToken()
 		if token != lexing.LITERAL {
 			panic("FROM clause must come with table name.")
 		}
 
 		// Parse table alias.
 		alias := ""
-		if token, value := p.scanIgnoreWhitespace(); token == lexing.LITERAL {
+		if token, value := tokenizer.ReadToken(); token == lexing.LITERAL {
 			alias = value
 		} else {
-			p.unscan()
+			tokenizer.UnreadToken()
 		}
 
 		target.AddTarget(name, alias)
