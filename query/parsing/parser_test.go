@@ -127,3 +127,21 @@ func TestSelectFromWhereWithAlias(t *testing.T) {
 			TableAlias: "u",
 		})
 }
+
+func TestUpdateWhereWithAlias(t *testing.T) {
+	testParseCorrectQuery(t,
+		`UPDATE User u SET u.Name=? WHERE u.Age=21`,
+		&Update{
+			Fields: []*Field{
+				&Field{Target: "u", Name: "Name", Value: "?"},
+			},
+			Conditions: []*EqualsCondition{
+				&EqualsCondition{
+					Field: &Field{Target: "u", Name: "Age"},
+					Value: "21",
+				},
+			},
+			TableName:  "User",
+			TableAlias: "u",
+		})
+}

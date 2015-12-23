@@ -5,10 +5,12 @@ import (
 )
 
 // OffsetState parses OFFSET SQL clauses along with the value.
-type OffsetState struct{}
+type OffsetState struct {
+	NextStates []State
+}
 
 func (s *OffsetState) Next() []State {
-	return []State{}
+	return s.NextStates
 }
 
 func (s *OffsetState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {

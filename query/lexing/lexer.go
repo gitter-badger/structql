@@ -104,6 +104,8 @@ func (l *Lexer) nextLiteral() (Token, string) {
 	switch strings.ToUpper(value) {
 	case "SELECT":
 		token = SELECT
+	case "UPDATE":
+		token = UPDATE
 	case "FROM":
 		token = FROM
 	case "WHERE":
@@ -116,6 +118,8 @@ func (l *Lexer) nextLiteral() (Token, string) {
 		token = LIMIT
 	case "OFFSET":
 		token = OFFSET
+	case "SET":
+		token = SET
 	}
 
 	return token, value

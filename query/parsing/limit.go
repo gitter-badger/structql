@@ -5,12 +5,12 @@ import (
 )
 
 // LimitState parses LIMIT SQL clauses along with the value.
-type LimitState struct{}
+type LimitState struct {
+	NextStates []State
+}
 
 func (ls *LimitState) Next() []State {
-	return []State{
-		&OffsetState{},
-	}
+	return ls.NextStates
 }
 
 func (ls *LimitState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {

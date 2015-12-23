@@ -4,18 +4,18 @@ import (
 	"github.com/s2gatev/structql/query/lexing"
 )
 
-// WhereState parses WHERE SQL clauses along with their conditions.
-type WhereState struct {
+// SetState parses SET SQL clauses along with their fields.
+type SetState struct {
 	NextStates []State
 }
 
-func (s *WhereState) Next() []State {
+func (s *SetState) Next() []State {
 	return s.NextStates
 }
 
-func (s *WhereState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
-	if target, ok := result.(HasConditions); ok {
-		if token, _ := tokenizer.ReadToken(); token != lexing.WHERE {
+func (s *SetState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
+	if target, ok := result.(HasFields); ok {
+		if token, _ := tokenizer.ReadToken(); token != lexing.SET {
 			tokenizer.UnreadToken()
 			return result, false
 		}
@@ -24,11 +24,11 @@ func (s *WhereState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
 		for {
 			token, fieldName := tokenizer.ReadToken()
 			if token != lexing.LITERAL {
-				panic("WHERE clause must come with conditions.")
+				panic("SET clause must come with conditions.")
 			}
 
 			if token, _ := tokenizer.ReadToken(); token != lexing.EQUALS {
-				panic("Wrong condition in WHERE clause.")
+				panic("Wrong condition in SET clause.")
 			}
 
 			condition := &EqualsCondition{}
@@ -36,13 +36,15 @@ func (s *WhereState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
 
 			token, value := tokenizer.ReadToken()
 			if token != lexing.LITERAL && token != lexing.PLACEHOLDER {
-				panic("Wrong condition in WHERE clause.")
+				panic("Wrong condition in SET clause.")
 			}
 
-			condition.Value = value
-			target.AddCondition(condition)
+			field := parseField(fieldName)
+			field.Value = value
 
-			if token, _ := tokenizer.ReadToken(); token != lexing.AND {
+			target.AddField(field)
+
+			if token, _ := tokenizer.ReadToken(); token != lexing.COMMA {
 				tokenizer.UnreadToken()
 				break
 			}

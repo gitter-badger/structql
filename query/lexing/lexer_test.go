@@ -26,11 +26,13 @@ var lexerTests = []lexerTest{
 	{`u.name`, LITERAL, `u.name`},
 	{`FROM`, FROM, "FROM"},
 	{`SELECT`, SELECT, "SELECT"},
+	{`UPDATE`, UPDATE, "UPDATE"},
 	{`WHERE`, WHERE, "WHERE"},
 	{`AND`, AND, "AND"},
 	{`OR`, OR, "OR"},
 	{`LIMIT`, LIMIT, "LIMIT"},
 	{`OFFSET`, OFFSET, "OFFSET"},
+	{`SET`, SET, "SET"},
 }
 
 func TestLexer(t *testing.T) {

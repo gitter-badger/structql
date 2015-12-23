@@ -5,12 +5,12 @@ import (
 )
 
 // SelectState parses SELECT SQL clauses along with the desired fields.
-type SelectState struct{}
+type SelectState struct {
+	NextStates []State
+}
 
 func (s *SelectState) Next() []State {
-	return []State{
-		&FromState{},
-	}
+	return s.NextStates
 }
 
 func (s *SelectState) Parse(result Node, tokenizer *Tokenizer) (Node, bool) {
