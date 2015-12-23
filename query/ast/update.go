@@ -1,5 +1,6 @@
 package ast
 
+// Update represents an Update SQL query AST node.
 type Update struct {
 	Fields     []*Field
 	TableName  string
@@ -15,11 +16,11 @@ func (u *Update) AddCondition(condition *EqualsCondition) {
 	u.Conditions = append(u.Conditions, condition)
 }
 
-func (u *Update) AddTarget(name, alias string) {
+func (u *Update) SetTarget(name, alias string) {
 	u.TableName = name
 	u.TableAlias = alias
 }
 
-func (u *Update) Assemble() string {
+func (u *Update) BuildQuery() string {
 	return ""
 }

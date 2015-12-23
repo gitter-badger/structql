@@ -1,9 +1,5 @@
 package ast
 
-import (
-	"fmt"
-)
-
 // Select represents a SQL SELECT statement.
 type Select struct {
 	Fields     []*Field
@@ -22,7 +18,7 @@ func (ss *Select) AddCondition(condition *EqualsCondition) {
 	ss.Conditions = append(ss.Conditions, condition)
 }
 
-func (ss *Select) AddTarget(name, alias string) {
+func (ss *Select) SetTarget(name, alias string) {
 	ss.TableName = name
 	ss.TableAlias = alias
 }
@@ -35,36 +31,44 @@ func (ss *Select) SetOffset(offset string) {
 	ss.Offset = offset
 }
 
-func (ss *Select) Assemble() string {
-	fields := ""
+func (ss *Select) BuildQuery() string {
+	query := ""
+
+	// Build SELECT part.
+	fieldsPart := ""
 	for index, field := range ss.Fields {
 		if index != 0 {
-			fields += ", "
+			fieldsPart += ", "
 		}
-		fields += field.Assemble()
+		fieldsPart += field.BuildQuery()
 	}
+	query += "SELECT " + fieldsPart
 
-	target := ss.TableName
+	// Build FROM part.
+	targetPart := ss.TableName
 	if ss.TableAlias != "" {
-		target += " " + ss.TableAlias
+		targetPart += " " + ss.TableAlias
 	}
+	query += " FROM " + targetPart
 
-	query := fmt.Sprintf("SELECT %v FROM %v", fields, target)
-
+	// Build WHERE part.
 	if len(ss.Conditions) > 0 {
-		conditions := ""
+		conditionsPart := ""
 		for index, condition := range ss.Conditions {
 			if index != 0 {
-				conditions += " AND "
+				conditionsPart += " AND "
 			}
-			conditions += condition.Assemble()
+			conditionsPart += condition.BuildQuery()
 		}
-		query += " WHERE " + conditions
+		query += " WHERE " + conditionsPart
 	}
 
+	// Build LIMIT part.
 	if ss.Limit != "" {
 		query += " LIMIT " + ss.Limit
 	}
+
+	// Build OFFSET part.
 	if ss.Offset != "" {
 		query += " OFFSET " + ss.Offset
 	}

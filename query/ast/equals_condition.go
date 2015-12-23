@@ -1,10 +1,11 @@
 package ast
 
+// EqualsCondition represents an equality field-value relation.
 type EqualsCondition struct {
 	Field *Field
 	Value string
 }
 
-func (c *EqualsCondition) Assemble() string {
-	return c.Field.Assemble() + "=" + c.Value
+func (c *EqualsCondition) BuildQuery() string {
+	return c.Field.BuildQuery() + "=" + c.Value
 }

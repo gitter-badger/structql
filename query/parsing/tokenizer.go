@@ -10,9 +10,9 @@ import (
 type Tokenizer struct {
 	lexer  *lexing.Lexer
 	buffer struct {
-		token  lexing.Token
-		value  string
-		isFull bool
+		token     lexing.Token
+		value     string
+		available bool
 	}
 }
 
@@ -32,13 +32,13 @@ func (t *Tokenizer) ReadToken() (lexing.Token, string) {
 
 // UnreadToken brings back the previously read token into the SQL query.
 func (t *Tokenizer) UnreadToken() {
-	t.buffer.isFull = true
+	t.buffer.available = true
 }
 
 // read returns the next token in the SQL query.
 func (t *Tokenizer) read() (lexing.Token, string) {
-	if t.buffer.isFull {
-		t.buffer.isFull = false
+	if t.buffer.available {
+		t.buffer.available = false
 	} else {
 		t.buffer.token, t.buffer.value = t.lexer.NextToken()
 	}

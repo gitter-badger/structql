@@ -29,5 +29,5 @@ func GenerateQueryFunc(query string, models map[string]reflect.Type) string {
 		return true
 	})
 
-	return queryNode.Assemble()
+	return queryNode.BuildQuery()
 }

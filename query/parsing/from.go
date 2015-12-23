@@ -12,5 +12,5 @@ type FromState struct {
 }
 
 func (s *FromState) Parse(result ast.Node, tokenizer *Tokenizer) (ast.Node, bool) {
-	return SelectTarget(lexing.FROM)(result, tokenizer)
+	return SelectTarget(lexing.FROM, result, tokenizer)
 }

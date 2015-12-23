@@ -12,7 +12,7 @@ type UpdateState struct {
 }
 
 func (s *UpdateState) Parse(result ast.Node, tokenizer *Tokenizer) (ast.Node, bool) {
-	return SelectTarget(lexing.UPDATE)(&ast.Update{}, tokenizer)
+	return SelectTarget(lexing.UPDATE, &ast.Update{}, tokenizer)
 }
 
 func (s *UpdateState) isFieldToken(token lexing.Token) bool {
