@@ -1,4 +1,6 @@
 # structql
+
+[![Join the chat at https://gitter.im/s2gatev/structql](https://badges.gitter.im/s2gatev/structql.svg)](https://gitter.im/s2gatev/structql?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![MIT License](http://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 **structql** is a database abstraction layer that sits somewhere between the `database/sql` library and an ORM, offering:
